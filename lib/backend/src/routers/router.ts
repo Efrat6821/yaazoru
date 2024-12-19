@@ -8,6 +8,9 @@ import * as branchController from '../controller/branch';
 import * as branchCustomerController from '../controller/branchCustomer';
 import * as branchUserController from '../controller/branchUser';
 
+import * as excelController from '../controller/excel';
+
+
 import { errorHandler } from '../middleware/errorHandler';
 import { hasRole } from '../middleware/auth';
 
@@ -67,6 +70,9 @@ router.get(`${ROUTE_PATH}/branchUser/branch/:id`, hasRole('admin'), branchUserCo
 router.get(`${ROUTE_PATH}/branchUser/user/:id`, hasRole('admin'), branchUserController.getBranchUserByUser_id);
 router.put(`${ROUTE_PATH}/branchUser/:id`, hasRole('admin'), branchUserController.updateBranchUser);
 router.delete(`${ROUTE_PATH}/branchUser/:id`, hasRole('admin'), branchUserController.deleteBranchUser);
+
+router.get(`${ROUTE_PATH}/excel`, hasRole('admin'), excelController.handleReadExcelFile);
+
 
 router.all('*', errorHandler)
 

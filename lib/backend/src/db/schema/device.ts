@@ -14,6 +14,7 @@ const createDeviceSchema = async () => {
                 table.string("SIM_number").notNullable().unique();
                 table.string("IMEI_1").notNullable().unique();
                 table.string("mehalcha_number").notNullable().unique();
+                table.string("device_number").notNullable().unique();
                 table.string("model").notNullable();
                 table.enum('status', ['active', 'inactive']).notNullable().defaultTo('active');
             });
