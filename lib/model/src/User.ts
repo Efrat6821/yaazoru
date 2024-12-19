@@ -14,7 +14,8 @@ interface Model {
     zipCode: string;
     password: string;
     user_name: string;
-    role: string;
+    role: 'admin' | 'branch';
+    status: string;
 }
 
 function sanitize(user: Model, hasId: boolean): Model {
@@ -136,7 +137,8 @@ function sanitize(user: Model, hasId: boolean): Model {
         zipCode: user.zipCode,
         password: user.password,
         user_name: user.user_name,
-        role:user.role,
+        role: user.role,
+        status: user.status || 'active',
     };
     return newUser;
 }
