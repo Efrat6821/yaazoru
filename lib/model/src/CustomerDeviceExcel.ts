@@ -16,7 +16,7 @@ interface Model {
     mehalcha_number: string;
     model: string;
 
-    date: Date;
+    date: number;
 }
 
 function sanitize(customerDeviceExcel: Model, isCustomer: boolean): Model {
@@ -193,7 +193,7 @@ function sanitize(customerDeviceExcel: Model, isCustomer: boolean): Model {
             SIM_number: customerDeviceExcel.SIM_number,
             mehalcha_number: customerDeviceExcel.mehalcha_number,
             model: customerDeviceExcel.model,
-            date: new Date(''),
+            date: 0,
         };
         return newCustomerDeviceExcel;
     }

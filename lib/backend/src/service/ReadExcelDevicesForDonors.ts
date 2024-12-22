@@ -78,12 +78,13 @@ const processExcelData = async (data: any[]): Promise<void> => {
                 }
 
                 if (!existCustomerDevice) {
+                    const date: Date = convertExcelDateToJSDate(sanitized.date);
                     try {
                         await db.CustomerDevice.createCustomerDevice({
                             customerDevice_id: "",
                             customer_id: existCustomer.customer_id,
                             device_id: existDevice.device_id,
-                            date: sanitized.date,
+                            date: date,
                         });
                         console.log('CustomerDevice created');
 
@@ -110,7 +111,7 @@ const processExcelData = async (data: any[]): Promise<void> => {
                         continue; // המשך ללולאה אם יש שגיאה בהוספת מכשיר
                     }
                 } else {
-                    console.log('Device already exists',existDevice.device_id);
+                    console.log('Device already exists', existDevice.device_id);
                 }
             }
         }
@@ -155,6 +156,12 @@ const extractDevice = (CustomerDeviceExcel: CustomerDeviceExcel.Model): Device.M
         isDonator: true,
     };
     return device;
+}
+
+const convertExcelDateToJSDate = (excelDate: number): Date => {
+    const excelEpoch = new Date(1900, 0, 1); // תאריך ההתחלה של אקסל
+    const daysOffset = excelDate - 2; // אקסל מחשיב 1900 כ"שנה מעוברת" בטעות
+    return new Date(excelEpoch.getTime() + daysOffset * 24 * 60 * 60 * 1000);
 }
 
 export { processExcelData };
