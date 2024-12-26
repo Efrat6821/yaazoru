@@ -7,17 +7,12 @@ import * as authController from '../controller/AuthController';
 import * as branchController from '../controller/branch';
 import * as branchCustomerController from '../controller/branchCustomer';
 import * as branchUserController from '../controller/branchUser';
-
 import * as excelController from '../controller/excel';
-
-
 import { errorHandler } from '../middleware/errorHandler';
 import { hasRole } from '../middleware/auth';
 
-
 const router = Router();
 const ROUTE_PATH = '/controller';
-
 
 router.post(`${ROUTE_PATH}/customer`, hasRole('admin', 'branch'), customersController.createCustomer);
 router.get(`${ROUTE_PATH}/customer`, hasRole('admin'), customersController.getCustomers);
