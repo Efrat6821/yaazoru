@@ -10,6 +10,7 @@ interface PaymentFormInput {
     mustEvery: string;
     Payments: string;
     startDate: string;
+    dayOfTheMonth: string;
 }
 declare global {
     interface Window {
@@ -59,7 +60,7 @@ const PaymentForm = forwardRef((props: { onPaymentChange: (paymentData: any) => 
                 },
                 expiry: {
                     selector: '#expiry',
-                    placeholder: 'MM/YYYY',
+                    placeholder: 'MM/YY',
                     version: '1'
                 },
                 identity_number: {
@@ -141,34 +142,16 @@ const PaymentForm = forwardRef((props: { onPaymentChange: (paymentData: any) => 
         setErrors(errorMessages);
     };
 
-    // const parseResponse = (response: any) => {
-    //     console.log('העיסקה הצליחה!!');
-    //     console.log('פרטי עיסקה:', response);
-
-    //     if (response.errors) {
-    //         const errorMessages = response.errors.map((error: any) => error.message);
-    //         setErrors(errorMessages);
-    //     } else {
-    //         if (response.transaction_response.success) {
-    //             //העיסקה הצליחה? זה אומר שהאימות עבר בהצלחה אז מה צריך לעשות עכשיו:
-    //             //1. שמירה של הטוקן הDB ע"י קריאת שרת
-    //             //2. לעדכן את כל הנתונים 
-    //             onPaymentChange(response.transaction_response.success);
-    //         } else {
-    //             setErrors([response.transaction_response.error]);
-    //         }
-    //     }
-    // };
-
     useEffect(() => {
         const subscription = watch((value) => {
-            const { name, mustEvery, Payments, startDate } = value;
-            console.log("timeData update:", { name, mustEvery, Payments, startDate });
+            const { name, mustEvery, Payments, startDate, dayOfTheMonth } = value;
+            console.log("timeData update:", { name, mustEvery, Payments, startDate, dayOfTheMonth });
             OnTimeChange({
                 name: name,
                 mustEvery: mustEvery,
                 payments: Payments,
-                startDate: startDate
+                startDate: startDate,
+                dayOfTheMonth: dayOfTheMonth
             });
         });
 
@@ -236,14 +219,11 @@ const PaymentForm = forwardRef((props: { onPaymentChange: (paymentData: any) => 
                             padding: 1,
                             background: 'rgba(246, 248, 252, 0.58)',
                             borderRadius: 1,
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            display: 'inline-flex',
                         }}
                     >
                         <div
                             id="identity_number"
-                            style={{ width: '100%', height: '29px' }}
+                            style={{ width: '100%', height: '44px' }}
                         >
                         </div>
                     </Box>
@@ -272,14 +252,11 @@ const PaymentForm = forwardRef((props: { onPaymentChange: (paymentData: any) => 
                             padding: 1, // 10px
                             background: 'rgba(246, 248, 252, 0.58)',
                             borderRadius: 1, // 6px
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            display: 'inline-flex',
                         }}
                     >
                         <div
                             id="cvv"
-                            style={{ width: '100%', height: '29px' }}
+                            style={{ width: '100%', height: '44px' }}
                         >
                         </div>
                     </Box>
@@ -308,14 +285,11 @@ const PaymentForm = forwardRef((props: { onPaymentChange: (paymentData: any) => 
                             padding: 1,
                             background: 'rgba(246, 248, 252, 0.58)',
                             borderRadius: 1,
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            display: 'inline-flex',
                         }}
                     >
                         <div
                             id="expiry"
-                            style={{ width: '100%', height: '29px' }}
+                            style={{ width: '100%', height: '44px' }}
                         >
                         </div>
                     </Box>
@@ -344,22 +318,16 @@ const PaymentForm = forwardRef((props: { onPaymentChange: (paymentData: any) => 
                             padding: 1,
                             background: 'rgba(246, 248, 252, 0.58)',
                             borderRadius: 1,
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            display: 'inline-flex',
                         }}
                     >
                         <div
                             id="credit_card_number"
-                            style={{ width: '100%', height: '29px' }}
+                            style={{ width: '100%', height: '44px' }}
                         >
                         </div>
                     </Box>
                 </Box>
             </Box>
-
-
-
 
             <CustomTypography
                 text={t('billingDate')}
@@ -367,8 +335,16 @@ const PaymentForm = forwardRef((props: { onPaymentChange: (paymentData: any) => 
                 weight='medium'
                 color={colors.brand.color_8}
             />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '75%' }}>
-                <Box sx={{ width: 300, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1, paddingLeft: '50px' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                <Box >
+                    <CustomTextField
+                        control={control}
+                        label={t('dayOfTheMonth')}
+                        name='dayOfTheMonth'
+                        placeholder='10'
+                    />
+                </Box>
+                <Box >
                     <CustomTextField
                         control={control}
                         label={t('mustEvery')}
@@ -377,7 +353,7 @@ const PaymentForm = forwardRef((props: { onPaymentChange: (paymentData: any) => 
                     />
                 </Box>
 
-                <Box sx={{ width: 300, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1, paddingLeft: '50px' }}>
+                <Box >
                     <CustomTextField
                         control={control}
                         label={t('payments')}
@@ -386,7 +362,7 @@ const PaymentForm = forwardRef((props: { onPaymentChange: (paymentData: any) => 
                     />
                 </Box>
 
-                <Box sx={{ width: 300, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1, paddingLeft: '50px' }}>
+                <Box >
                     <CustomTextField
                         control={control}
                         label={t('startDate')}
